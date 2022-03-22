@@ -1,17 +1,14 @@
 package com.codegym.service;
 
 import com.codegym.model.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ProductService implements IProductService {
-    private static List<Product> products = new ArrayList<>();
-
-    static {
-        products.add(new Product(1, "IPhone 13", 320000, "New", "https://bizweb.dktcdn.net/100/116/615/products/iphone-13-pink-select-2021-08d93148-74cf-4b7d-83b9-3f7baa431c9e.png?v=1646816034187"));
-        products.add(new Product(2, "IPhone 12", 220000, "New", "https://cdn.tgdd.vn/Products/Images/42/228736/iphone-12-violet-1-600x600.jpg"));
-    }
+    private List<Product> products = new ArrayList<>();
 
     @Override
     public List<Product> findAll() {

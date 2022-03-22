@@ -20,7 +20,7 @@
         </td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.description}"></td>
-        <td><img th:src="@{${product.image}}" alt="ảnh sản phẩm" height="100"></td>
+        <td><img th:src="@{/image/__${product.image}__}" alt="ảnh sản phẩm" height="100"></td>
         <td><a th:href="@{/products/edit/__${product.id}__}">Chỉnh sửa</a></td>
         <td><a th:href="@{/products/delete/__${product.id}__}">Xóa</a></td>
     </tr>
