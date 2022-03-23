@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
@@ -43,6 +44,11 @@ public class ProductController {
 
     @PostMapping("/products/delete/{id}")
     public ModelAndView deleteProduct(@PathVariable Long id) {
+        Product product = productService.findById(id);
+        File file = new File(uploadPath + product.getImage());
+        if (file.exists()){
+            file.delete();
+        }
         productService.removeById(id);
         return new ModelAndView("redirect:/products/list");
     }
@@ -78,8 +84,24 @@ public class ProductController {
     }
 
     @PostMapping("/products/edit/{id}")
-    public ModelAndView editProduct(@PathVariable Long id, @ModelAttribute Product product) {
-        productService.save(product);
+    public ModelAndView editProduct(@PathVariable Long id, @ModelAttribute ProductForm productForm) {
+        MultipartFile img = productForm.getImage();
+        Product oldProduct = productService.findById(id);
+        if (img.getSize() != 0) {
+            String fileName = productForm.getImage().getOriginalFilename();
+            long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
+            fileName = currentTime + fileName;
+            oldProduct.setImage(fileName);
+            try {
+                FileCopyUtils.copy(img.getBytes(), new File(uploadPath + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        oldProduct.setPrice(productForm.getPrice());
+        oldProduct.setDescription(productForm.getDescription());
+        oldProduct.setName(productForm.getName());
+        productService.save(oldProduct);
         return new ModelAndView("redirect:/products/list");
     }
 
