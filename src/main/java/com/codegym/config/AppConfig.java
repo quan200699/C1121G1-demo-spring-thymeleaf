@@ -1,5 +1,7 @@
 package com.codegym.config;
 
+import com.codegym.dao.IProductDAO;
+import com.codegym.dao.ProductDAO;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -72,5 +74,10 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSizePerFile(52428800);//Set dung lượng tối đa khi upload => 5MB // Không giới hạn thì để -1
         return multipartResolver;
+    }
+
+    @Bean
+    public IProductDAO productDAO(){
+        return new ProductDAO();
     }
 }

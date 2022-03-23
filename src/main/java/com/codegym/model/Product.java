@@ -3,16 +3,19 @@ package com.codegym.model;
 import javax.persistence.*;
 
 @Entity//Tạo bảng
-//@Table(name = "products")
+@Table(name = "products")
 public class Product {
     @Id//Khóa chính
     @GeneratedValue(strategy = GenerationType.IDENTITY)//Tự tăng
     private Long id;
 
+    @Column(columnDefinition = "Varchar(50)", nullable = false)
     private String name; //khi tạo bảng string => varchar(255)
 
+    @Column(nullable = false)
     private double price;
 
+    @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String description;
 
     private String image;

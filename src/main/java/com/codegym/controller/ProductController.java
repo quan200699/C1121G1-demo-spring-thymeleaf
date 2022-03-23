@@ -65,7 +65,7 @@ public class ProductController {
             e.printStackTrace();
         }
         Product product = new Product(productForm.getId(), productForm.getName(), productForm.getPrice(), productForm.getDescription(), fileName);
-        productService.create(product);
+        productService.save(product);
         return new ModelAndView("redirect:/products/list");
     }
 
@@ -79,7 +79,7 @@ public class ProductController {
 
     @PostMapping("/products/edit/{id}")
     public ModelAndView editProduct(@PathVariable Long id, @ModelAttribute Product product) {
-        productService.updateById(id, product);
+        productService.save(product);
         return new ModelAndView("redirect:/products/list");
     }
 
