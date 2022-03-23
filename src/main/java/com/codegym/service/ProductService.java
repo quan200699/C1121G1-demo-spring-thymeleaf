@@ -15,10 +15,10 @@ public class ProductService implements IProductService {
         return products;
     }
 
-    public int findProductById(int id) {
+    public int findProductById(Long id) {
         int index = -1;
         for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId() == id) {
+            if (products.get(i).getId().equals(id)) {
                 index = i;
                 break;
             }
@@ -27,7 +27,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(Long id) {
         int index = findProductById(id);
         if (index != -1) {
             return products.get(index);
@@ -41,13 +41,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void updateById(int id, Product product) {
+    public void updateById(Long id, Product product) {
         int index = findProductById(id);
         products.set(index, product);
     }
 
     @Override
-    public void removeById(int id) {
+    public void removeById(Long id) {
         int index = findProductById(id);
         products.remove(index);
     }

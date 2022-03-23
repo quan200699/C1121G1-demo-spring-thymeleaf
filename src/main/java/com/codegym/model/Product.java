@@ -1,9 +1,15 @@
 package com.codegym.model;
 
-public class Product {
-    private int id;
+import javax.persistence.*;
 
-    private String name;
+@Entity//Tạo bảng
+//@Table(name = "products")
+public class Product {
+    @Id//Khóa chính
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//Tự tăng
+    private Long id;
+
+    private String name; //khi tạo bảng string => varchar(255)
 
     private double price;
 
@@ -14,7 +20,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, double price, String description, String image) {
+    public Product(Long id, String name, double price, String description, String image) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,11 +28,11 @@ public class Product {
         this.image = image;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/delete/{id}")
-    public ModelAndView showDeleteProduct(@PathVariable Integer id) {
+    public ModelAndView showDeleteProduct(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/product/delete");
         Product product = productService.findById(id);
         modelAndView.addObject("product", product);
@@ -42,7 +42,7 @@ public class ProductController {
     }
 
     @PostMapping("/products/delete/{id}")
-    public ModelAndView deleteProduct(@PathVariable Integer id) {
+    public ModelAndView deleteProduct(@PathVariable Long id) {
         productService.removeById(id);
         return new ModelAndView("redirect:/products/list");
     }
@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/edit/{id}")
-    public ModelAndView showEditForm(@PathVariable Integer id) {
+    public ModelAndView showEditForm(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/product/edit");
         Product product = productService.findById(id);
         modelAndView.addObject("product", product);
@@ -78,13 +78,13 @@ public class ProductController {
     }
 
     @PostMapping("/products/edit/{id}")
-    public ModelAndView editProduct(@PathVariable Integer id, @ModelAttribute Product product) {
+    public ModelAndView editProduct(@PathVariable Long id, @ModelAttribute Product product) {
         productService.updateById(id, product);
         return new ModelAndView("redirect:/products/list");
     }
 
     @GetMapping("/products/{id}")
-    public ModelAndView showProductDetail(@PathVariable Integer id) {
+    public ModelAndView showProductDetail(@PathVariable Long id) {
         Product product = productService.findById(id);
         return new ModelAndView("/product/view", "product", product);
     }
