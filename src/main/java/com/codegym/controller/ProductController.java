@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -27,9 +25,12 @@ public class ProductController {
     private String uploadPath;
 
     @GetMapping("/products/list")
-    public ModelAndView showListProduct() {
+    public ModelAndView showListProduct(@RequestParam(name = "q") Optional<String> q) {
         ModelAndView modelAndView = new ModelAndView("/product/list");
         List<Product> products = productService.findAll();
+        if (q.isPresent()) {
+            products = productService.findProductByNameContaining(q.get());
+        }
         modelAndView.addObject("products", products);
         return modelAndView;
     }
@@ -46,7 +47,7 @@ public class ProductController {
     public ModelAndView deleteProduct(@PathVariable Long id) {
         Product product = productService.findById(id);
         File file = new File(uploadPath + product.getImage());
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
         productService.removeById(id);

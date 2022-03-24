@@ -26,8 +26,15 @@ public class ProductService implements IProductService {
     public Product save(Product product) {
         return productDAO.save(product);
     }
+
     @Override
     public void removeById(Long id) {
         productDAO.removeById(id);
+    }
+
+    @Override
+    public List<Product> findProductByNameContaining(String name) {
+        name = "%" + name + "%";
+        return productDAO.findProductByNameContaining(name);
     }
 }
