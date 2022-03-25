@@ -1,40 +1,52 @@
 package com.codegym.service;
 
-import com.codegym.dao.IProductDAO;
 import com.codegym.model.Product;
+import com.codegym.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements IProductService {
     @Autowired
-    private IProductDAO productDAO;
+    private IProductRepository productRepository;
+
 
     @Override
-    public List<Product> findAll() {
-        return productDAO.findAll();
+    public Iterable<Product> findAll() {
+        return productRepository.findAll();
     }
 
     @Override
-    public Product findById(Long id) {
-        return productDAO.findById(id);
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
     @Override
     public Product save(Product product) {
-        return productDAO.save(product);
+        return productRepository.save(product);
     }
 
     @Override
     public void removeById(Long id) {
-        productDAO.removeById(id);
+        productRepository.deleteById(id);
     }
 
     @Override
-    public List<Product> findProductByNameContaining(String name) {
-        name = "%" + name + "%";
-        return productDAO.findProductByNameContaining(name);
+    public Iterable<Product> findProductByNameContaining(String name) {
+        return productRepository.findByNameContaining(name);
+    }
+
+    @Override
+    public Iterable<Product> findProductPriceBetween(Double min, Double max) {
+        return productRepository.findProductPriceBetween(min, max);
     }
 }
