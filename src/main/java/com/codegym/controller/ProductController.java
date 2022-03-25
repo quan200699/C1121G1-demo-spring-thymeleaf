@@ -1,8 +1,10 @@
 package com.codegym.controller;
 
+import com.codegym.model.Category;
 import com.codegym.model.Product;
 import com.codegym.model.ProductForm;
-import com.codegym.service.IProductService;
+import com.codegym.service.category.ICategoryService;
+import com.codegym.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,9 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private ICategoryService categoryService;
 
     @Value("${file-upload}")
     private String uploadPath;
@@ -62,6 +67,8 @@ public class ProductController {
     @GetMapping("/products/create")
     public ModelAndView showCreateProduct() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
+        Iterable<Category> categories = categoryService.findAll();
+        modelAndView.addObject("categories", categories);
         modelAndView.addObject("product", new ProductForm());//Gửi 1 đối tượng product rỗng sang file view để tạo mới
         return modelAndView;
     }
@@ -77,6 +84,7 @@ public class ProductController {
             e.printStackTrace();
         }
         Product product = new Product(productForm.getId(), productForm.getName(), productForm.getPrice(), productForm.getDescription(), fileName);
+        product.setCategory(productForm.getCategory());
         productService.save(product);
         return new ModelAndView("redirect:/products/list");
     }

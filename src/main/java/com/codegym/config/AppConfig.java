@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -33,6 +34,7 @@ import java.util.Properties;
 @EnableWebMvc
 @Configuration
 @ComponentScan("com.codegym")
+@EnableSpringDataWebSupport//Để hỗ trợ phân trang
 @EnableJpaRepositories("com.codegym.repository") //Để quét các repository
 @EnableTransactionManagement//annoutation sử dụng để quản lý transaction
 @PropertySource("classpath:upload-file.properties")
