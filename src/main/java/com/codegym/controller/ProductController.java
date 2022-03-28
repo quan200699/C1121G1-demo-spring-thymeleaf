@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -27,6 +30,11 @@ public class ProductController {
 
     @Value("${file-upload}")
     private String uploadPath;
+
+    @ModelAttribute("categories")
+    public Iterable<Category> categories(){
+        return categoryService.findAll();
+    }
 
     @GetMapping("/products/list")
     public ModelAndView showListProduct(@RequestParam(name = "q") Optional<String> q) {
@@ -67,14 +75,15 @@ public class ProductController {
     @GetMapping("/products/create")
     public ModelAndView showCreateProduct() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
-        Iterable<Category> categories = categoryService.findAll();
-        modelAndView.addObject("categories", categories);
         modelAndView.addObject("product", new ProductForm());//Gửi 1 đối tượng product rỗng sang file view để tạo mới
         return modelAndView;
     }
 
     @PostMapping("/products/create")
-    public ModelAndView createProduct(@ModelAttribute ProductForm productForm) {
+    public ModelAndView createProduct(@Valid @ModelAttribute("product") ProductForm productForm, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {//Trả về true nếu dữ liệu người dùng nhập vào không hợp lệ
+            return new ModelAndView("/product/create");
+        }
         String fileName = productForm.getImage().getOriginalFilename();
         long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
         fileName = currentTime + fileName;

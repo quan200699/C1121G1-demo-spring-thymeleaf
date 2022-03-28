@@ -1,6 +1,8 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity//Tạo bảng
 @Table(name = "products")
@@ -10,12 +12,15 @@ public class Product {
     private Long id;
 
     @Column(columnDefinition = "Varchar(50)", nullable = false)
+    @NotEmpty
     private String name; //khi tạo bảng string => varchar(255)
 
     @Column(nullable = false)
+    @NotNull
     private double price;
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
+    @NotNull
     private String description;
 
     private String image;
