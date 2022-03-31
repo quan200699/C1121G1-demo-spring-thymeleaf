@@ -42,7 +42,7 @@ public class ProductController {
         return new ModelAndView("error-404");
     }
 
-    @GetMapping("/products/list")
+    @GetMapping("/product/list")
     public ModelAndView showListProduct(@RequestParam(name = "q") Optional<String> q) {
         ModelAndView modelAndView = new ModelAndView("/product/list");
         Iterable<Product> products = productService.findAll();
@@ -53,7 +53,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/products/delete/{id}")
+    @GetMapping("/product/delete/{id}")
     public ModelAndView showDeleteProduct(@PathVariable Long id) throws NotFoundException {
         Optional<Product> productOptional = productService.findById(id);
         if (!productOptional.isPresent()) {
@@ -64,7 +64,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/products/delete/{id}")
+    @PostMapping("/product/delete/{id}")
     public ModelAndView deleteProduct(@PathVariable Long id) throws NotFoundException {
         Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
@@ -78,14 +78,14 @@ public class ProductController {
         throw new NotFoundException();
     }
 
-    @GetMapping("/products/create")
+    @GetMapping("/product/create")
     public ModelAndView showCreateProduct() {
         ModelAndView modelAndView = new ModelAndView("/product/create");
         modelAndView.addObject("product", new ProductForm());//Gửi 1 đối tượng product rỗng sang file view để tạo mới
         return modelAndView;
     }
 
-    @PostMapping("/products/create")
+    @PostMapping("/product/create")
     public ModelAndView createProduct(@Valid @ModelAttribute("product") ProductForm productForm, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {//Trả về true nếu dữ liệu người dùng nhập vào không hợp lệ
             return new ModelAndView("/product/create");
@@ -104,7 +104,7 @@ public class ProductController {
         return new ModelAndView("redirect:/products/list");
     }
 
-    @GetMapping("/products/edit/{id}")
+    @GetMapping("/product/edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) throws NotFoundException {
         Optional<Product> productOptional = productService.findById(id);
         if (!productOptional.isPresent()) {
@@ -115,7 +115,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/products/edit/{id}")
+    @PostMapping("/product/edit/{id}")
     public ModelAndView editProduct(@PathVariable Long id, @ModelAttribute ProductForm productForm) throws NotFoundException {
         MultipartFile img = productForm.getImage();
         Optional<Product> product = productService.findById(id);
@@ -141,7 +141,7 @@ public class ProductController {
         throw new NotFoundException();
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public ModelAndView showProductDetail(@PathVariable Long id) {
         Optional<Product> productOptional = productService.findById(id);
         if (!productOptional.isPresent()) {
@@ -152,7 +152,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/products/search")
+    @GetMapping("/product/search")
     public ModelAndView showProductSearch(@RequestParam("min") Double min, @RequestParam("max") Double max) {
         Iterable<Product> products = productService.findProductPriceBetween(min, max);
         ModelAndView modelAndView = new ModelAndView("/product/list");
