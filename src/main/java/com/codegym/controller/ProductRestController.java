@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/products")
 public class ProductRestController {
     @Autowired
     private IProductService productService;
-
 
     @GetMapping
     public ResponseEntity<Iterable<Product>> findAll(@RequestParam(name = "q") Optional<String> q) {

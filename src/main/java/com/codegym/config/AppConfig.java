@@ -49,33 +49,6 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    //Cấu hình thymeleaf
-    @Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver(); //SpringResourceTemplateResolver => class con của interface TemplateResolver
-        //Định nghĩa bộ khung cho view
-        templateResolver.setPrefix("/WEB-INF/views/"); //tiền tố
-        templateResolver.setSuffix(".html"); //Đuổi file
-        templateResolver.setTemplateMode(TemplateMode.HTML); //Định dạng của view
-        templateResolver.setCharacterEncoding("UTF-8"); // Viết tiếng việt
-        return templateResolver;
-    }
-
-    @Bean
-    public SpringTemplateEngine templateEngine() { //Template engine được khai báo để sử dụng bộ khung template resolver ở trên
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        return templateEngine;
-    }
-
-    @Bean
-    public ThymeleafViewResolver viewResolver() { //Sử dụng bộ template engine đã khai báo
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
-        return viewResolver;
-    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //Override phương thức add resource handler để cấu hình đường dẫn file tĩnh
