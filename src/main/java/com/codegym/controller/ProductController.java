@@ -159,4 +159,9 @@ public class ProductController {
         modelAndView.addObject("products", products);
         return modelAndView;
     }
+
+    @GetMapping("/not-found")
+    public String notFound(){
+        return "error-404";
+    }
 }
